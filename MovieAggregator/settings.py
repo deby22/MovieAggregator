@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# OMDB_API_KEY
+OMDB_API_KEY = '8f6b5665'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'MovieAggregator',
 ]
 
 MIDDLEWARE = [
