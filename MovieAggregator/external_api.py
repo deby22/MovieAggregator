@@ -1,7 +1,7 @@
 import requests
 from requests.exceptions import ConnectionError
 
-from .exceptions import ExternalApiConnectionError
+from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
 
 OMDB_API_KEY = '8f6b5665'
@@ -23,10 +23,14 @@ class Api:
             response = requests.get(url)
         except ConnectionError:
             # log info here
-            raise ExternalApiConnectionError('ConnectionError with OmdbAPI')
+            raise ExternalApiConnectionError('ConnectionError with fetch data')
         else:
-            return self.__map_json(response.json())
+            data = self.__map_json(response.json())
+            if data.get('error'):
+                raise MovieDoesNotExists('Movie not found!')
+
+            return data
 
     def __map_json(self, data):
-        '''Map json keys to lowwerkeys.'''
+        '''Map json keys to lowerkeys.'''
         return dict((k.lower(), v) for k, v in data.items())

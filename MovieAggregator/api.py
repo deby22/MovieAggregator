@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from .models import Movie
 from .serlializers import BasicSerializer, MovieSerializer
 from .external_api import Api
-from .exceptions import ExternalApiConnectionError
+from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
 
 class TopMovieList(ListAPIView):
@@ -60,7 +60,7 @@ class MovieList(APIView):
         api = Api()
         try:
             return api.get(title)
-        except ExternalApiConnectionError as e:
+        except (ExternalApiConnectionError, MovieDoesNotExists) as e:
             raise serializers.ValidationError(e)
 
     def get(self, request, format=None):
