@@ -1,16 +1,16 @@
+from django_filters import rest_framework as filters
+
+from rest_framework import serializers
 from rest_framework import status
-from rest_framework.views import APIView
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Movie
 from .serlializers import BasicSerializer, MovieSerializer
-
 from .external_api import Api
-
-
-from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import ListAPIView
+from .exceptions import ExternalApiConnectionError
 
 
 class TopMovieList(ListAPIView):
@@ -26,7 +26,7 @@ class TopMovieList(ListAPIView):
 
 class MovieList(APIView):
     '''
-        Movie List and Create API.
+        List and Create Movie API.
 
         List:
             search by most common field:
@@ -58,7 +58,10 @@ class MovieList(APIView):
     def __get_data(self, title):
         '''Fetch data from external api.'''
         api = Api()
-        return api.get(title)
+        try:
+            return api.get(title)
+        except ExternalApiConnectionError as e:
+            raise serializers.ValidationError(e)
 
     def get(self, request, format=None):
         data = self.get_queryset()
@@ -83,6 +86,3 @@ class MovieList(APIView):
             return Response(extended_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-

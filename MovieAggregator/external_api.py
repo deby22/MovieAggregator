@@ -1,7 +1,7 @@
-from django.conf import settings
-
 import requests
-from requests.exceptions import ConnectTimeout
+from requests.exceptions import ConnectionError
+
+from .exceptions import ExternalApiConnectionError
 
 
 OMDB_API_KEY = '8f6b5665'
@@ -10,14 +10,20 @@ API_URL = 'http://www.omdbapi.com/?apikey={}'.format(OMDB_API_KEY)
 
 
 class Api:
+    '''
+        API to fetch data from OMDB.
+
+        Raises:
+            ConnectionError: passed from API
+    '''
 
     def get(self, title):
-        # what if film doesn't, exist
         url = API_URL + '&t=' + title
         try:
             response = requests.get(url)
-        except ConnectTimeout:
-            return {}
+        except ConnectionError:
+            # log info here
+            raise ExternalApiConnectionError('ConnectionError with OmdbAPI')
         else:
             return self.__map_json(response.json())
 
