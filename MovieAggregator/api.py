@@ -19,10 +19,28 @@ from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
 
 class TopMovieList(ListAPIView):
-    '''Movie List aggregate data by comments count'''
+    '''Movie List aggregate data by comments count in the date range
+
+    Valid date format:
+        %Y-%m-%dT%H:%M:%S
+
+    Ranking by comments added after specyfic date:
+        ?start_date=2010-05-08T21:36:07
+
+    Ranking by comments added before specyfic date:
+        ?end_date=2020-05-08T21:36:07
+
+    Ranking by comments added between:
+        start_date=2010-05-08T21:36:07&end_date=2020-05-08T21:36:07
+    '''
 
     serializer_class = TopMovieSerializer
-    queryset = Movie.objects.top()
+
+    def get_queryset(self):
+        queryset = Movie.objects.all()
+        start_date = self.request.query_params.get('start_date', None)
+        end_date = self.request.query_params.get('end_date', None)
+        return Movie.objects.top(start_date, end_date)
 
 
 class MovieList(APIView):
