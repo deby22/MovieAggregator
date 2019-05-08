@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from .api import MovieList
+from .api import MovieList, TopMovieList
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', MovieList.as_view()),
+    path('top/', TopMovieList.as_view()),
 ]
