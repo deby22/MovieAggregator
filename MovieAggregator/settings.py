@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DATE_INPUT_FORMATS': [("%d %b %Y"),],
+}
+
 # Application definition
 
 INSTALLED_APPS = [
