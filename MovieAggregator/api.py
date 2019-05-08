@@ -8,7 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Movie, Comment
-from .serlializers import BasicSerializer, MovieSerializer, CommentSerializer
+from .serlializers import (
+    BasicSerializer,
+    CommentSerializer,
+    MovieSerializer,
+    TopMovieSerializer,
+)
 from .external_api import Api
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
@@ -16,12 +21,8 @@ from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 class TopMovieList(ListAPIView):
     '''Movie List aggregate data by comments count'''
 
-    serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-    __basic_fields = ('title', 'year')
-    filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filter_fields = __basic_fields
-    search_fields = __basic_fields
+    serializer_class = TopMovieSerializer
+    queryset = Movie.objects.top()
 
 
 class MovieList(APIView):

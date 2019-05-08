@@ -1,5 +1,7 @@
 from django.db import models
 
+from .managers import MovieManager
+
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
@@ -27,6 +29,8 @@ class Movie(models.Model):
     boxoffice = models.CharField(max_length=255)
     production = models.CharField(max_length=255)
     website = models.CharField(max_length=255)  # URLField
+
+    objects = MovieManager()
 
 
 class Comment(models.Model):

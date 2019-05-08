@@ -15,6 +15,14 @@ class BasicSerializer(serializers.ModelSerializer):
         fields = ('title', )
 
 
+class TopMovieSerializer(serializers.ModelSerializer):
+    total_comments = serializers.IntegerField()
+
+    class Meta:
+        model = Movie
+        fields = ('title', 'pk', 'total_comments')
+
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
