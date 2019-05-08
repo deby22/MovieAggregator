@@ -5,10 +5,10 @@ Basic movie database interacting with external API
 # Usage
 Clone This Project (Make Sure You Have Git Installed)
 ``
-https://github.com/mustafamuratcoskun/DjangoBlogApp.git
+https://github.com/deby22/MovieAggregator.git
 ``
-Install Dependencies 
 
+Install Dependencies 
 ``
 pip install -r requirements.txt
 ``
@@ -19,22 +19,23 @@ python manage.py makemigrations
 python manage.py migrate
 ``
 
-After all these steps , you can start testing and this project. 
-
-# Testing
+## Testing
 
 Runserver:
 ``
 python manage.py runserver
 ``
+
 Movie Api
 ``
 http://localhost:8000/movie/
 ``
-Comment Api
+
+Comment Ap
 ``
 http://localhost:8000/comments/
 ``
+
 Top Movie Api:
 ``
 http://localhost:8000/top/
