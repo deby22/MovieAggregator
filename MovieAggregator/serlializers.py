@@ -1,12 +1,30 @@
-from .models import Movie, Comment
+from .models import Movie, Comment, Rating
 
 from rest_framework import serializers
 
 
+class RatingSerializer(serializers.ModelSerializer):
+    Source = serializers.CharField(source='source')
+    Value = serializers.CharField(source='value')
+
+    class Meta:
+        model = Rating
+        fields = ('Source', 'Value')
+
+
 class MovieSerializer(serializers.ModelSerializer):
+    ratings = RatingSerializer(many=True)
+
     class Meta:
         model = Movie
         fields = '__all__'
+
+    def create(self, validated_data):
+        ratings = validated_data.pop('ratings')
+        movie = Movie.objects.create(**validated_data)
+        for rating in ratings:
+            Rating.objects.create(movie=movie, **rating)
+        return movie
 
 
 class BasicSerializer(serializers.ModelSerializer):

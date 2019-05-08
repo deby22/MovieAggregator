@@ -19,7 +19,6 @@ class Movie(models.Model):
     country = models.CharField(max_length=255)
     awards = models.CharField(max_length=255)
     poster = models.CharField(max_length=255)  # URLField?
-    # ratings = models.CharField(max_length=255)  Nested
     metascore = models.CharField(max_length=255)  # IntegerField?
     imdbrating = models.CharField(max_length=255)  # DoubleField?
     imdbvotes = models.CharField(max_length=255)  # DoubleField?
@@ -31,6 +30,12 @@ class Movie(models.Model):
     website = models.CharField(max_length=255)  # URLField
 
     objects = MovieManager()
+
+
+class Rating(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    source = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
 
 
 class Comment(models.Model):
