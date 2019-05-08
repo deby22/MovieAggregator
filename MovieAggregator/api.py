@@ -3,12 +3,12 @@ from django_filters import rest_framework as filters
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Movie
-from .serlializers import BasicSerializer, MovieSerializer
+from .models import Movie, Comment
+from .serlializers import BasicSerializer, MovieSerializer, CommentSerializer
 from .external_api import Api
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
@@ -86,3 +86,11 @@ class MovieList(APIView):
             return Response(extended_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommentList(ListCreateAPIView):
+
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
+    filter_backends = (filters.DjangoFilterBackend, )
+    filter_fields = ('id', )
