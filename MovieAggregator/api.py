@@ -23,8 +23,6 @@ class TopMovieList(ListAPIView):
 
     serializer_class = TopMovieSerializer
     queryset = Movie.objects.top()
-    filter_backends = (filters.DjangoFilterBackend)
-    filter_fields = ('movie', )
 
 
 class MovieList(APIView):
@@ -96,4 +94,4 @@ class CommentList(ListCreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     filter_backends = (filters.DjangoFilterBackend, )
-    filter_fields = ('id', )
+    filter_fields = ('movie', )
