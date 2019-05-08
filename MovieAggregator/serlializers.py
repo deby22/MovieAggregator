@@ -17,10 +17,25 @@ class BasicSerializer(serializers.ModelSerializer):
 
 class TopMovieSerializer(serializers.ModelSerializer):
     total_comments = serializers.IntegerField()
+    rank = serializers.SerializerMethodField()
 
     class Meta:
         model = Movie
-        fields = ('title', 'pk', 'total_comments')
+        fields = ('title', 'total_comments', 'rank')
+
+    def get_rank(self, instance):
+        '''
+        Really bad idea.
+        RowNumber or Rank is not suppported on sqlite3<=3.25.
+
+        There is a lot of redundant request to datebase.
+
+        Better way is add this line to manager:
+            annotate(rank = Window(expression=RowNumber()))
+        '''
+        comments = instance.comment_set.count()
+        queryset = Movie.objects.top().filter(total_comments__gte=comments)
+        return queryset.values_list('total_comments').distinct().count()
 
 
 class CommentSerializer(serializers.ModelSerializer):
