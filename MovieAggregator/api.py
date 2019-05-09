@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Movie, Comment
-from .serlializers import (
+from .serializers import (
     BasicSerializer,
     CommentSerializer,
     MovieSerializer,

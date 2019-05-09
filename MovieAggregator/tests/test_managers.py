@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from MovieAggregator.models import Movie, Comment
 from MovieAggregator.external_api import Api
-from MovieAggregator.serlializers import MovieSerializer
+from MovieAggregator.serializers import MovieSerializer
 
 
 class MovieManagerTestCase(TestCase):
