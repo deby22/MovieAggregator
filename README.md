@@ -44,3 +44,22 @@ Top Movie Api:
 ``
 http://localhost:8000/top/
 ``
+
+# Published
+
+http://netguru.ddeby.pl/
+
+Movie Api
+``
+http://netguru.ddeby.pl/movie/
+``
+
+Comment Api
+``
+http://netguru.ddeby.pl/comments/
+``
+
+Top Movie Api:
+``
+http://netguru.ddeby.pl/top/
+``
