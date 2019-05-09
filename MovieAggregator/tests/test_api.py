@@ -23,7 +23,7 @@ class ApiTestCase(TestCase):
         title = 'Avengers'
 
         # Act
-        response = self.client.post('/movie/', {'title': title}, format='json')
+        response = self.client.post('/movies/', {'title': title}, format='json')
 
         # Assert
         data = response.json()
@@ -35,10 +35,10 @@ class ApiTestCase(TestCase):
         # Arrange
         titles = ['Avengers', 'Avatar', 'Blade Runner']
         for title in titles:
-            self.client.post('/movie/', {'title': title}, format='json')
+            self.client.post('/movies/', {'title': title}, format='json')
 
         # Act
-        response = self.client.get('/movie/')
+        response = self.client.get('/movies/')
         data = response.json()
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
@@ -50,7 +50,7 @@ class ApiTestCase(TestCase):
         # Arrange
         titles = ['Avengers', 'Avatar', 'Blade Runner']
         for title in titles:
-            self.client.post('/movie/', {'title': title}, format='json')
+            self.client.post('/movies/', {'title': title}, format='json')
 
         self.client.post('/comments/', {'content': 'Nice!', 'movie': 1}, format='json')
 
@@ -68,7 +68,7 @@ class ApiTestCase(TestCase):
         title = 'Avengers'
         commnets = ['OK', 'Nice', 'Amazing']
 
-        self.client.post('/movie/', {'title': title}, format='json')
+        self.client.post('/movies/', {'title': title}, format='json')
         for comment in commnets:
             self.client.post('/comments/', {'content': comment, 'movie': 1}, format='json')
 

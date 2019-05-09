@@ -32,7 +32,7 @@ python manage.py runserver
 
 Movie Api
 ``
-http://localhost:8000/movie/
+http://localhost:8000/movies/
 ``
 
 Comment Ap
@@ -51,7 +51,7 @@ http://netguru.ddeby.pl/
 
 Movie Api
 ``
-http://netguru.ddeby.pl/movie/
+http://netguru.ddeby.pl/movies/
 ``
 
 Comment Api

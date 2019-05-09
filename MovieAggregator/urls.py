@@ -21,7 +21,7 @@ from .api import MovieList, TopMovieList, CommentList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('movie/', MovieList.as_view()),
+    path('movies/', MovieList.as_view()),
     path('top/', TopMovieList.as_view()),
     path('comments/', CommentList.as_view()),
 ]
