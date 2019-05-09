@@ -2,8 +2,12 @@ from django.test import TestCase
 
 from rest_framework.test import APIClient
 
-from MovieAggregator.models import Movie
-from MovieAggregator.serializers import MovieSerializer
+from MovieAggregator.models import Movie, Comment
+from MovieAggregator.serializers import (
+    CommentSerializer,
+    MovieSerializer,
+    TopMovieSerializer,
+)
 
 
 class ApiTestCase(TestCase):
@@ -26,3 +30,55 @@ class ApiTestCase(TestCase):
         movie = Movie.objects.get(pk = data['id'])
         serializer = MovieSerializer(instance=movie)
         self.assertEqual(serializer.data, data)
+
+    def test_list_objects(self):
+        # Arrange
+        titles = ['Avengers', 'Avatar', 'Blade Runner']
+        for title in titles:
+            self.client.post('/movie/', {'title': title}, format='json')
+
+        # Act
+        response = self.client.get('/movie/')
+        data = response.json()
+        movies = Movie.objects.all()
+        serializer = MovieSerializer(movies, many=True)
+
+        # Assert
+        self.assertEqual(serializer.data, data)
+
+    def test_top(self):
+        # Arrange
+        titles = ['Avengers', 'Avatar', 'Blade Runner']
+        for title in titles:
+            self.client.post('/movie/', {'title': title}, format='json')
+
+        self.client.post('/comments/', {'content': 'Nice!', 'movie': 1}, format='json')
+
+        # Act
+        response = self.client.get('/top/')
+        data = response.json()
+        movies = Movie.objects.top()
+        serializer = TopMovieSerializer(movies, many=True)
+
+        # Assert
+        self.assertEqual(serializer.data, data)
+
+    def test_list_comments(self):
+        # Arrange
+        title = 'Avengers'
+        commnets = ['OK', 'Nice', 'Amazing']
+
+        self.client.post('/movie/', {'title': title}, format='json')
+        for comment in commnets:
+            self.client.post('/comments/', {'content': comment, 'movie': 1}, format='json')
+
+        # Act
+        response = self.client.get('/comments/')
+        data = response.json()
+        comments = Comment.objects.all()
+        serializer = CommentSerializer(comments, many=True)
+
+        # Assert
+        self.assertEqual(serializer.data, data)
+
+
