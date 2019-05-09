@@ -25,7 +25,7 @@ SECRET_KEY = ')q-@j1%$n!5%*ig100tjmgeh!4^$03uast%!8v7nl)doi@-aeb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'netguru.ddeby.pl', ]
 
 REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': [("%d %b %Y"),],
@@ -124,3 +124,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+STATIC_ROOT = os.path.join(ENV_PATH, '../public/static/')
+MEDIA_ROOT = os.path.join(ENV_PATH, '../public/media/')
+STATICFILES_DIRS = [
+    os.path.join(ENV_PATH, 'static/')
+]
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
+
