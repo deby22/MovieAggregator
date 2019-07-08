@@ -90,18 +90,20 @@ class TopMovieSerializer(MovieSerializer):
 
             annotate(rank = Window(expression=RowNumber()))
         '''
-        # prepare date
-        data = self.context['request'].GET
-        start_date = prepare_date(data.get('start_date'))
-        end_date = prepare_date(data.get('end_date'))
-
-        # filter comments by date range
         comments = instance.comment_set.all()
-        if start_date:
-            comments = comments.filter(created_at__gte=start_date)
 
-        if  end_date:
-            comments = comments.filter(created_at__lte=end_date)
+        # prepare date
+        requestt = self.context.get('request')
+        if request:
+            start_date = prepare_date(request.GET.data.get('start_date'))
+            end_date = prepare_date(request.GET.data.get('end_date'))
+
+            # filter comments by date range
+            if start_date:
+                comments = comments.filter(created_at__gte=start_date)
+
+            if  end_date:
+                comments = comments.filter(created_at__lte=end_date)
 
         queryset = Movie.objects.top(start_date, end_date).filter(total_comments__gte=comments.count())
         return queryset.values_list('total_comments').distinct().count()
