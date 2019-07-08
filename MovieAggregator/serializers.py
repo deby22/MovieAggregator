@@ -63,10 +63,11 @@ class BasicSerializer(serializers.ModelSerializer):
 class TopMovieSerializer(serializers.ModelSerializer):
     total_comments = serializers.IntegerField()
     rank = serializers.SerializerMethodField()
+    movie_id = serializers.IntegerField(source='id')
 
     class Meta:
         model = Movie
-        fields = ('title', 'total_comments', 'rank')
+        fields = ('movie_id', 'total_comments', 'rank')
 
     def get_rank(self, instance):
         '''
