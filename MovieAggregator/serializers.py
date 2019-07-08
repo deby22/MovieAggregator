@@ -88,15 +88,18 @@ class TopMovieSerializer(MovieSerializer):
 
         There is a lot of redundant request to datebase.
 
+        Better way:
             annotate(rank = Window(expression=RowNumber()))
         '''
         comments = instance.comment_set.all()
 
         # prepare date
-        requestt = self.context.get('request')
+        start_date, end_date = None, None
+
+        request = self.context.get('request')
         if request:
-            start_date = prepare_date(request.GET.data.get('start_date'))
-            end_date = prepare_date(request.GET.data.get('end_date'))
+            start_date = prepare_date(request.GET.get('start_date'))
+            end_date = prepare_date(request.GET.get('end_date'))
 
             # filter comments by date range
             if start_date:
