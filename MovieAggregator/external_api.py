@@ -26,7 +26,7 @@ class Api:
 
     def get(self, title):
         try:
-            response = requests.get(self.url, param={'t': title})
+            response = requests.get(self.url, params={'t': title})
         except ConnectionError as e:
             logger.error(e)
             raise ExternalApiConnectionError('ConnectionError with fetch data')

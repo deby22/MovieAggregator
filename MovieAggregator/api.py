@@ -96,10 +96,11 @@ class MovieList(APIView):
         # pre_valid
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        data = serializer.data
+        prepared_data = serializer.data
 
         # valid
-        extended_serializer = self.extended_serializer(data=self.__get_data(data['title']))
+        data = self.__get_data(prepared_data['title'])
+        extended_serializer = self.extended_serializer(data=data)
         if extended_serializer.is_valid(raise_exception=True):
             extended_serializer.save()
             return Response(extended_serializer.data, status=status.HTTP_201_CREATED)

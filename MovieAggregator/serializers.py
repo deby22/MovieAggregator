@@ -39,28 +39,35 @@ class MovieSerializer(serializers.ModelSerializer):
     imdbID = serializers.CharField(max_length=255, source='imdbid')
     imdbRating = serializers.DecimalField(max_digits=3, decimal_places=2, source='imdbrating')
     imdbVotes = serializers.CharField(max_length=255, source='imdbvotes')
-    ratings = RatingSerializer(many=True)
+    Ratings = RatingSerializer(many=True, source='ratings')
 
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = (
+            'Actors', 'Awards', 'BoxOffice', 'Country', 'DVD', 'Director',
+            'Genre', 'Language', 'Metascore', 'Plot', 'Poster', 'Production',
+            'Rated', 'Released', 'Runtime', 'Title', 'Type', 'Website',
+            'Writer', 'Year', 'imdbID', 'imdbRating', 'imdbVotes', 'Ratings',
+        )
 
     def create(self, validated_data):
-        ratings = validated_data.pop('ratings')
+        '''Create Movie and nested Ratings.'''
+        ratings = validated_data.pop('ratings', [])
         movie = Movie.objects.create(**validated_data)
         for rating in ratings:
             Rating.objects.create(movie=movie, **rating)
+
         return movie
 
 
-class BasicSerializer(serializers.ModelSerializer):
+class BasicSerializer(MovieSerializer):
 
     class Meta:
         model = Movie
         fields = ('title', )
 
 
-class TopMovieSerializer(serializers.ModelSerializer):
+class TopMovieSerializer(MovieSerializer):
     total_comments = serializers.IntegerField()
     rank = serializers.SerializerMethodField()
     movie_id = serializers.IntegerField(source='id')
