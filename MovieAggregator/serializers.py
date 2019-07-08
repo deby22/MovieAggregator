@@ -1,6 +1,8 @@
 from .models import Movie, Comment, Rating
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+
 
 MIN_YEAR = 0
 MAX_YEAR = 2100
@@ -31,7 +33,7 @@ class MovieSerializer(serializers.ModelSerializer):
     Rated = serializers.CharField(max_length=255, source='rated')
     Released = serializers.DateField(source='released')
     Runtime = serializers.CharField(max_length=255, source='runtime')
-    Title = serializers.CharField(max_length=255, source='title')
+    Title = serializers.CharField(max_length=255, validators=[UniqueValidator(queryset=Movie.objects.all())], source='title')
     Type = serializers.CharField(max_length=255, source='type')
     Website = serializers.CharField(max_length=255, source='website')
     Writer = serializers.CharField(max_length=255, source='writer')

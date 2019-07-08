@@ -4,7 +4,7 @@ from .managers import MovieManager
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     rated = models.CharField(max_length=255)
     year = models.PositiveSmallIntegerField()
     rated = models.CharField(max_length=255)
