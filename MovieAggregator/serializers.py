@@ -2,6 +2,9 @@ from .models import Movie, Comment, Rating
 
 from rest_framework import serializers
 
+MIN_YEAR = 0
+MAX_YEAR = 2100
+
 
 class RatingSerializer(serializers.ModelSerializer):
     Source = serializers.CharField(source='source')
@@ -13,6 +16,29 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    Actors = serializers.CharField(max_length=255, source='actors')
+    Awards = serializers.CharField(max_length=255, source='awards')
+    BoxOffice = serializers.CharField(max_length=255, source='boxoffice')
+    Country = serializers.CharField(max_length=255, source='country')
+    DVD = serializers.CharField(max_length=255, source='dvd')
+    Director = serializers.CharField(max_length=255, source='director')
+    Genre = serializers.CharField(max_length=255, source='genre')
+    Language = serializers.CharField(max_length=255, source='language')
+    Metascore = serializers.CharField(max_length=255, source='metascore')
+    Plot = serializers.CharField(style={'base_template': 'textarea.html'}, source='plot')
+    Poster = serializers.CharField(max_length=255, source='poster')
+    Production = serializers.CharField(max_length=255, source='production')
+    Rated = serializers.CharField(max_length=255, source='rated')
+    Released = serializers.DateField(source='released')
+    Runtime = serializers.CharField(max_length=255, source='runtime')
+    Title = serializers.CharField(max_length=255, source='title')
+    Type = serializers.CharField(max_length=255, source='type')
+    Website = serializers.CharField(max_length=255, source='website')
+    Writer = serializers.CharField(max_length=255, source='writer')
+    Year = serializers.IntegerField(min_value=MIN_YEAR, max_value=MAX_YEAR, source='year')
+    imdbID = serializers.CharField(max_length=255, source='imdbid')
+    imdbRating = serializers.DecimalField(max_digits=3, decimal_places=2, source='imdbrating')
+    imdbVotes = serializers.CharField(max_length=255, source='imdbvotes')
     ratings = RatingSerializer(many=True)
 
     class Meta:
@@ -28,6 +54,7 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class BasicSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Movie
         fields = ('title', )
