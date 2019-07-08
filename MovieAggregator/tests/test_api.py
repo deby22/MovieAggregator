@@ -27,7 +27,7 @@ class ApiTestCase(TestCase):
 
         # Assert
         data = response.json()
-        movie = Movie.objects.get(pk = data['id'])
+        movie = Movie.objects.get(pk = data['ID'])
         serializer = MovieSerializer(instance=movie)
         self.assertEqual(serializer.data, data)
 

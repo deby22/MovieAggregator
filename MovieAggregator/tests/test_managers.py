@@ -1,9 +1,10 @@
 from django.test import TestCase
 from datetime import datetime, timedelta
 
-from MovieAggregator.models import Movie, Comment
 from MovieAggregator.external_api import Api
+from MovieAggregator.models import Movie, Comment
 from MovieAggregator.serializers import MovieSerializer
+from MovieAggregator.utils import prepare_date
 
 
 class MovieManagerTestCase(TestCase):
@@ -36,15 +37,6 @@ class MovieManagerTestCase(TestCase):
              Comment.objects.create(content='sample', movie=self.movies[index])
 
         total_comments = Movie.objects.top().values_list('total_comments', flat=True)
-        self.assertEqual(list(total_comments), comments)
-
-    def test_ordering_with_invalid_date(self):
-        comments = [10, 5, 2]
-        for index, comment in enumerate(comments):
-            for a in range(comment):
-             Comment.objects.create(content='sample', movie=self.movies[index])
-
-        total_comments = Movie.objects.top('invalid').values_list('total_comments', flat=True)
         self.assertEqual(list(total_comments), comments)
 
     def test_ordering_with_start_date(self):

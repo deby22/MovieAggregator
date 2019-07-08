@@ -14,8 +14,8 @@ from .serializers import (
     MovieSerializer,
     TopMovieSerializer,
 )
-from .external_api import Api
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
+from .external_api import Api
 
 
 class TopMovieList(ListAPIView):
@@ -37,10 +37,9 @@ class TopMovieList(ListAPIView):
     serializer_class = TopMovieSerializer
 
     def get_queryset(self):
-        queryset = Movie.objects.all()
         start_date = self.request.query_params.get('start_date', None)
         end_date = self.request.query_params.get('end_date', None)
-        return Movie.objects.top(start_date, end_date)
+        return Movie.objects.top(start_date, end_date).order_by('-total_comments', 'id')
 
 
 class MovieList(APIView):

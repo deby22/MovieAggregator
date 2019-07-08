@@ -3,6 +3,8 @@ from .models import Movie, Comment, Rating
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from MovieAggregator.utils import prepare_date
+
 
 MIN_YEAR = 0
 MAX_YEAR = 2100
@@ -42,13 +44,14 @@ class MovieSerializer(serializers.ModelSerializer):
     imdbRating = serializers.DecimalField(max_digits=3, decimal_places=2, source='imdbrating')
     imdbVotes = serializers.CharField(max_length=255, source='imdbvotes')
     Ratings = RatingSerializer(many=True, source='ratings')
+    ID = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         model = Movie
         fields = (
             'Actors', 'Awards', 'BoxOffice', 'Country', 'DVD', 'Director',
             'Genre', 'Language', 'Metascore', 'Plot', 'Poster', 'Production',
-            'Rated', 'Released', 'Runtime', 'Title', 'Type', 'Website',
+            'Rated', 'Released', 'Runtime', 'Title', 'Type', 'Website', 'ID',
             'Writer', 'Year', 'imdbID', 'imdbRating', 'imdbVotes', 'Ratings',
         )
 
@@ -85,11 +88,22 @@ class TopMovieSerializer(MovieSerializer):
 
         There is a lot of redundant request to datebase.
 
-        Better way is add this line to manager:
             annotate(rank = Window(expression=RowNumber()))
         '''
-        comments = instance.comment_set.count()
-        queryset = Movie.objects.top().filter(total_comments__gte=comments)
+        # prepare date
+        data = self.context['request'].GET
+        start_date = prepare_date(data.get('start_date'))
+        end_date = prepare_date(data.get('end_date'))
+
+        # filter comments by date range
+        comments = instance.comment_set.all()
+        if start_date:
+            comments = comments.filter(created_at__gte=start_date)
+
+        if  end_date:
+            comments = comments.filter(created_at__lte=end_date)
+
+        queryset = Movie.objects.top(start_date, end_date).filter(total_comments__gte=comments.count())
         return queryset.values_list('total_comments').distinct().count()
 
 

@@ -8,20 +8,7 @@ from MovieAggregator.exceptions import (
     ExternalApiConnectionError,
     MovieDoesNotExists,
 )
-from MovieAggregator.external_api import map_json, Api
-
-
-class MapJsonTestCase(TestCase):
-
-    def test_map_json(self):
-        data = [
-            ({'a': 'v'}, {'a': 'v'}),  # no change
-            ({'A': 'v'}, {'a': 'v'}),  # lowercase
-            ({'a': 'v', 'B': 'v'}, {'a': 'v', 'b': 'v'}),  # lowercase
-            ({'A': 'V', 'B': ['v']}, {'a': 'V', 'b': ['v']}),  # lowercase
-        ]
-        for row in data:
-            self.assertEqual(map_json(row[0]), row[1])
+from MovieAggregator.external_api import Api
 
 
 class ApiTestCase(TestCase):
