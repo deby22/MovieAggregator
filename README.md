@@ -13,6 +13,12 @@ Install Dependencies
 pip install -r requirements.txt
 ``
 
+Create local settings file:
+``
+echo "OMDB_API_KEY = '8f6b5665'" > local_settings.py
+``
+
+
 Set Database (Make Sure you are in directory same as manage.py)
 
 ``

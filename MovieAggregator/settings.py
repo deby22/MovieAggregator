@@ -31,6 +31,7 @@ REST_FRAMEWORK = {
     'DATE_INPUT_FORMATS': [("%d %b %Y"),],
 }
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,3 +139,7 @@ STATICFILES_FINDERS = [
 ]
 
 
+try:
+    from local_settings import *
+except ImportError:
+    raise Exception('A local_settings.py file is required')

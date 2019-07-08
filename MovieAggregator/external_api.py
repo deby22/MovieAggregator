@@ -1,15 +1,16 @@
 import logging
 
 import requests
+
 from requests.exceptions import ConnectionError
+
+from django.conf import settings
 
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
 logger = logging.getLogger(__name__)
 
-OMDB_API_KEY = '8f6b5665'
-
-API_URL = 'http://www.omdbapi.com/?apikey={}'.format(OMDB_API_KEY)
+API_URL = 'http://www.omdbapi.com/?apikey={}'.format(settings.OMDB_API_KEY)
 
 
 class Api:
