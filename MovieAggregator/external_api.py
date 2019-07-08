@@ -21,10 +21,12 @@ class Api:
             ConnectionError: passed from API
     '''
 
+    def __init__(self, url=API_URL):
+        self.url = url
+
     def get(self, title):
-        url = API_URL + '&t=' + title
         try:
-            response = requests.get(url)
+            response = requests.get(self.url, param={'t': title})
         except ConnectionError as e:
             logger.error(e)
             raise ExternalApiConnectionError('ConnectionError with fetch data')
