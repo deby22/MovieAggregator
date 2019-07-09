@@ -1,7 +1,10 @@
 from django.test import TestCase
 
 from rest_framework.test import APIClient
+from rest_framework.serializers import ValidationError
+from unittest.mock import Mock, patch
 
+from MovieAggregator.exceptions import ExternalApiConnectionError, MovieDoesNotExists
 from MovieAggregator.models import Movie, Comment
 from MovieAggregator.serializers import (
     CommentSerializer,
@@ -81,4 +84,14 @@ class ApiTestCase(TestCase):
         # Assert
         self.assertEqual(serializer.data, data)
 
+    @patch('MovieAggregator.api.Api')
+    def test_raise_validationerror(self, api):
+        # Arrange
+        obj = Mock(side_effect = ExternalApiConnectionError)
+        api().get = obj
 
+        # Act
+        response = self.client.post('/movies/', {'title': 'title'}, format='json')
+
+        # Assert
+        self.assertEqual(response.status_code, 400)
