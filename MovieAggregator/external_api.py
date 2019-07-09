@@ -66,7 +66,6 @@ class Api:
             data = response.json()
             if data.get('error'):
                 raise MovieDoesNotExists('Movie not found!')
-            __import__('ipdb').set_trace()
 
             return data
 

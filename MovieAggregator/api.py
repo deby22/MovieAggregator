@@ -91,14 +91,23 @@ class MovieList(APIView):
             Two-stop validation process:
                 First validate title send by user
                 Second validate data from external api
-        '''
-        # pre_valid
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        prepared_data = serializer.data
 
-        # valid
-        data = self.__get_data(prepared_data['title'])
+            Data from external api stored in session to avoid redundant requests.
+        '''
+        # cache external api result
+        title = request.data.get('title')
+        if not title in request.session:
+            # pre_valid
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            prepared_data = serializer.data
+
+            # valid
+            data = self.__get_data(prepared_data['title'])
+            request.session[title] = data
+        else:
+            data = request.session[title]
+
         extended_serializer = self.extended_serializer(data=data)
         if extended_serializer.is_valid(raise_exception=True):
             extended_serializer.save()
