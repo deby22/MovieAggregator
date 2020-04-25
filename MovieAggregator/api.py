@@ -1,21 +1,15 @@
 from django_filters import rest_framework as filters
-
-from rest_framework import serializers
-from rest_framework import status
-from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import ListCreateAPIView, ListAPIView
+from rest_framework import serializers, status
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Movie, Comment
-from .serializers import (
-    BasicSerializer,
-    CommentSerializer,
-    MovieSerializer,
-    TopMovieSerializer,
-)
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 from .external_api import Api
+from .models import Comment, Movie
+from .serializers import (BasicSerializer, CommentSerializer, MovieSerializer,
+                          TopMovieSerializer)
 
 
 class TopMovieList(ListAPIView):

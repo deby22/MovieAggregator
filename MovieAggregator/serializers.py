@@ -1,10 +1,9 @@
-from .models import Movie, Comment, Rating
-
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from MovieAggregator.utils import prepare_date
 
+from .models import Comment, Movie, Rating
 
 MIN_YEAR = 0
 MAX_YEAR = 2100

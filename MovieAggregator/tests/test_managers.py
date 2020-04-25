@@ -1,8 +1,9 @@
-from django.test import TestCase
 from datetime import datetime, timedelta
 
+from django.test import TestCase
+
 from MovieAggregator.external_api import Api
-from MovieAggregator.models import Movie, Comment
+from MovieAggregator.models import Comment, Movie
 from MovieAggregator.serializers import MovieSerializer
 from MovieAggregator.utils import prepare_date
 

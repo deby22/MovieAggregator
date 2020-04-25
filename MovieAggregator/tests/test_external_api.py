@@ -1,13 +1,10 @@
-from django.test import TestCase
+from unittest.mock import Mock, patch
 
+from django.test import TestCase
 from requests.exceptions import ConnectionError
 
-from unittest.mock import patch, Mock
-
-from MovieAggregator.exceptions import (
-    ExternalApiConnectionError,
-    MovieDoesNotExists,
-)
+from MovieAggregator.exceptions import (ExternalApiConnectionError,
+                                        MovieDoesNotExists)
 from MovieAggregator.external_api import Api
 
 

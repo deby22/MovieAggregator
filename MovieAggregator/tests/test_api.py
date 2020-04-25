@@ -1,16 +1,14 @@
-from django.test import TestCase
-
-from rest_framework.test import APIClient
-from rest_framework.serializers import ValidationError
 from unittest.mock import Mock, patch
 
-from MovieAggregator.exceptions import ExternalApiConnectionError, MovieDoesNotExists
-from MovieAggregator.models import Movie, Comment
-from MovieAggregator.serializers import (
-    CommentSerializer,
-    MovieSerializer,
-    TopMovieSerializer,
-)
+from django.test import TestCase
+from rest_framework.serializers import ValidationError
+from rest_framework.test import APIClient
+
+from MovieAggregator.exceptions import (ExternalApiConnectionError,
+                                        MovieDoesNotExists)
+from MovieAggregator.models import Comment, Movie
+from MovieAggregator.serializers import (CommentSerializer, MovieSerializer,
+                                         TopMovieSerializer)
 
 
 class ApiTestCase(TestCase):

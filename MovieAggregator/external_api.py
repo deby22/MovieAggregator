@@ -1,10 +1,8 @@
 import logging
 
 import requests
-
-from requests.exceptions import ConnectionError
-
 from django.conf import settings
+from requests.exceptions import ConnectionError
 
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 
