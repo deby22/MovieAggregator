@@ -8,8 +8,12 @@ from rest_framework.views import APIView
 from .exceptions import ExternalApiConnectionError, MovieDoesNotExists
 from .external_api import Api
 from .models import Comment, Movie
-from .serializers import (BasicSerializer, CommentSerializer, MovieSerializer,
-                          TopMovieSerializer)
+from .serializers import (
+    BasicSerializer,
+    CommentSerializer,
+    MovieSerializer,
+    TopMovieSerializer,
+)
 
 
 class TopMovieList(ListAPIView):

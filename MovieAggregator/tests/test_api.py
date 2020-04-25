@@ -4,11 +4,13 @@ from django.test import TestCase
 from rest_framework.serializers import ValidationError
 from rest_framework.test import APIClient
 
-from MovieAggregator.exceptions import (ExternalApiConnectionError,
-                                        MovieDoesNotExists)
+from MovieAggregator.exceptions import ExternalApiConnectionError, MovieDoesNotExists
 from MovieAggregator.models import Comment, Movie
-from MovieAggregator.serializers import (CommentSerializer, MovieSerializer,
-                                         TopMovieSerializer)
+from MovieAggregator.serializers import (
+    CommentSerializer,
+    MovieSerializer,
+    TopMovieSerializer,
+)
 
 
 class ApiTestCase(TestCase):
@@ -30,6 +32,18 @@ class ApiTestCase(TestCase):
         movie = Movie.objects.get(pk=data["ID"])
         serializer = MovieSerializer(instance=movie)
         self.assertEqual(serializer.data, data)
+
+    def test_send_twice_same_post(self):
+        # Arrange
+        title = "Avengers"
+
+        # Act
+        response = self.client.post("/movies/", {"title": title}, format="json")
+        second_response = self.client.post("/movies/", {"title": title}, format="json")
+
+        # Assert
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(second_response.status_code, 400)
 
     def test_list_objects(self):
         # Arrange
