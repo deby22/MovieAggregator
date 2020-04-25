@@ -14,7 +14,6 @@ from MovieAggregator.serializers import (
 
 
 class ApiTestCase(TestCase):
-
     def setUp(self):
         self.client = APIClient()
 
@@ -23,25 +22,25 @@ class ApiTestCase(TestCase):
 
     def test_create_object(self):
         # Arrange
-        title = 'Avengers'
+        title = "Avengers"
 
         # Act
-        response = self.client.post('/movies/', {'title': title}, format='json')
+        response = self.client.post("/movies/", {"title": title}, format="json")
 
         # Assert
         data = response.json()
-        movie = Movie.objects.get(pk = data['ID'])
+        movie = Movie.objects.get(pk=data["ID"])
         serializer = MovieSerializer(instance=movie)
         self.assertEqual(serializer.data, data)
 
     def test_list_objects(self):
         # Arrange
-        titles = ['Avengers', 'Avatar', 'Blade Runner']
+        titles = ["Avengers", "Avatar", "Blade Runner"]
         for title in titles:
-            self.client.post('/movies/', {'title': title}, format='json')
+            self.client.post("/movies/", {"title": title}, format="json")
 
         # Act
-        response = self.client.get('/movies/')
+        response = self.client.get("/movies/")
         data = response.json()
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
@@ -51,14 +50,14 @@ class ApiTestCase(TestCase):
 
     def test_top(self):
         # Arrange
-        titles = ['Avengers', 'Avatar', 'Blade Runner']
+        titles = ["Avengers", "Avatar", "Blade Runner"]
         for title in titles:
-            self.client.post('/movies/', {'title': title}, format='json')
+            self.client.post("/movies/", {"title": title}, format="json")
 
-        self.client.post('/comments/', {'content': 'Nice!', 'movie': 1}, format='json')
+        self.client.post("/comments/", {"content": "Nice!", "movie": 1}, format="json")
 
         # Act
-        response = self.client.get('/top/')
+        response = self.client.get("/top/")
         data = response.json()
         movies = Movie.objects.top()
         serializer = TopMovieSerializer(movies, many=True)
@@ -68,15 +67,17 @@ class ApiTestCase(TestCase):
 
     def test_list_comments(self):
         # Arrange
-        title = 'Avengers'
-        commnets = ['OK', 'Nice', 'Amazing']
+        title = "Avengers"
+        commnets = ["OK", "Nice", "Amazing"]
 
-        self.client.post('/movies/', {'title': title}, format='json')
+        self.client.post("/movies/", {"title": title}, format="json")
         for comment in commnets:
-            self.client.post('/comments/', {'content': comment, 'movie': 1}, format='json')
+            self.client.post(
+                "/comments/", {"content": comment, "movie": 1}, format="json"
+            )
 
         # Act
-        response = self.client.get('/comments/')
+        response = self.client.get("/comments/")
         data = response.json()
         comments = Comment.objects.all()
         serializer = CommentSerializer(comments, many=True)
@@ -84,14 +85,14 @@ class ApiTestCase(TestCase):
         # Assert
         self.assertEqual(serializer.data, data)
 
-    @patch('MovieAggregator.api.Api')
+    @patch("MovieAggregator.api.Api")
     def test_raise_validationerror(self, api):
         # Arrange
-        obj = Mock(side_effect = ExternalApiConnectionError)
+        obj = Mock(side_effect=ExternalApiConnectionError)
         api().get = obj
 
         # Act
-        response = self.client.post('/movies/', {'title': 'title'}, format='json')
+        response = self.client.post("/movies/", {"title": "title"}, format="json")
 
         # Assert
         self.assertEqual(response.status_code, 400)

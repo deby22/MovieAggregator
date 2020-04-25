@@ -20,8 +20,8 @@ from .api import MovieList, TopMovieList, CommentList
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('movies/', MovieList.as_view()),
-    path('top/', TopMovieList.as_view()),
-    path('comments/', CommentList.as_view()),
+    path("admin/", admin.site.urls),
+    path("movies/", MovieList.as_view()),
+    path("top/", TopMovieList.as_view()),
+    path("comments/", CommentList.as_view()),
 ]

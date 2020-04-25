@@ -32,11 +32,11 @@ class Movie(models.Model):
     objects = MovieManager()
 
     def __str__(self):
-        return '{}. {} ({})'.format(self.pk, self.title, self.year)
+        return "{}. {} ({})".format(self.pk, self.title, self.year)
 
 
 class Rating(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="ratings")
     source = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
 

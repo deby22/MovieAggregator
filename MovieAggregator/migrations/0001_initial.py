@@ -8,55 +8,91 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Movie',
+            name="Movie",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255, unique=True)),
-                ('year', models.PositiveSmallIntegerField()),
-                ('rated', models.CharField(max_length=255)),
-                ('released', models.DateField()),
-                ('runtime', models.CharField(max_length=255)),
-                ('genre', models.CharField(max_length=255)),
-                ('director', models.CharField(max_length=255)),
-                ('writer', models.CharField(max_length=255)),
-                ('actors', models.CharField(max_length=255)),
-                ('plot', models.TextField()),
-                ('language', models.CharField(max_length=255)),
-                ('country', models.CharField(max_length=255)),
-                ('awards', models.CharField(max_length=255)),
-                ('poster', models.CharField(max_length=255)),
-                ('metascore', models.CharField(max_length=255)),
-                ('imdbrating', models.DecimalField(decimal_places=2, max_digits=3)),
-                ('imdbvotes', models.CharField(max_length=255)),
-                ('imdbid', models.CharField(max_length=255)),
-                ('type', models.CharField(max_length=255)),
-                ('dvd', models.CharField(max_length=255)),
-                ('boxoffice', models.CharField(max_length=255)),
-                ('production', models.CharField(max_length=255)),
-                ('website', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255, unique=True)),
+                ("year", models.PositiveSmallIntegerField()),
+                ("rated", models.CharField(max_length=255)),
+                ("released", models.DateField()),
+                ("runtime", models.CharField(max_length=255)),
+                ("genre", models.CharField(max_length=255)),
+                ("director", models.CharField(max_length=255)),
+                ("writer", models.CharField(max_length=255)),
+                ("actors", models.CharField(max_length=255)),
+                ("plot", models.TextField()),
+                ("language", models.CharField(max_length=255)),
+                ("country", models.CharField(max_length=255)),
+                ("awards", models.CharField(max_length=255)),
+                ("poster", models.CharField(max_length=255)),
+                ("metascore", models.CharField(max_length=255)),
+                ("imdbrating", models.DecimalField(decimal_places=2, max_digits=3)),
+                ("imdbvotes", models.CharField(max_length=255)),
+                ("imdbid", models.CharField(max_length=255)),
+                ("type", models.CharField(max_length=255)),
+                ("dvd", models.CharField(max_length=255)),
+                ("boxoffice", models.CharField(max_length=255)),
+                ("production", models.CharField(max_length=255)),
+                ("website", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Rating',
+            name="Rating",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('source', models.CharField(max_length=255)),
-                ('value', models.CharField(max_length=255)),
-                ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ratings', to='MovieAggregator.Movie')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("source", models.CharField(max_length=255)),
+                ("value", models.CharField(max_length=255)),
+                (
+                    "movie",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="ratings",
+                        to="MovieAggregator.Movie",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='MovieAggregator.Movie')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("content", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "movie",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="MovieAggregator.Movie",
+                    ),
+                ),
             ],
         ),
     ]

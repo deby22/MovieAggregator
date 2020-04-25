@@ -19,7 +19,7 @@ from .external_api import Api
 
 
 class TopMovieList(ListAPIView):
-    '''Movie List aggregate data by comments count in the date range
+    """Movie List aggregate data by comments count in the date range
 
     Valid date format:
         %Y-%m-%dT%H:%M:%S
@@ -32,18 +32,18 @@ class TopMovieList(ListAPIView):
 
     Ranking by comments added between:
         start_date=2010-05-08T21:36:07&end_date=2020-05-08T21:36:07
-    '''
+    """
 
     serializer_class = TopMovieSerializer
 
     def get_queryset(self):
-        start_date = self.request.query_params.get('start_date', None)
-        end_date = self.request.query_params.get('end_date', None)
-        return Movie.objects.top(start_date, end_date).order_by('-total_comments', 'id')
+        start_date = self.request.query_params.get("start_date", None)
+        end_date = self.request.query_params.get("end_date", None)
+        return Movie.objects.top(start_date, end_date).order_by("-total_comments", "id")
 
 
 class MovieList(APIView):
-    '''
+    """
         List and Create Movie API.
 
         List:
@@ -58,14 +58,14 @@ class MovieList(APIView):
 
         Create:
             Based on passed title, other details is fetched from external API
-    '''
+    """
 
     serializer_class = BasicSerializer
     extended_serializer = MovieSerializer
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
-    search_fields = ('title', 'year', 'genre')
-    filter_fields = ('title', 'writer', 'actors', 'plot')
-    ordering_fields = ('title', 'year', 'metascore', 'released', 'dvd')
+    search_fields = ("title", "year", "genre")
+    filter_fields = ("title", "writer", "actors", "plot")
+    ordering_fields = ("title", "year", "metascore", "released", "dvd")
 
     def get_queryset(self):
         queryset = Movie.objects.all()
@@ -74,7 +74,7 @@ class MovieList(APIView):
         return queryset
 
     def __get_data(self, title):
-        '''Fetch data from external api.'''
+        """Fetch data from external api."""
         api = Api()
         try:
             return api.get(title)
@@ -87,15 +87,15 @@ class MovieList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        '''
+        """
             Two-stop validation process:
                 First validate title send by user
                 Second validate data from external api
 
             Data from external api stored in session to avoid redundant requests.
-        '''
+        """
         # cache external api result
-        title = request.data.get('title')
+        title = request.data.get("title")
         if not title in request.session:
             # pre_valid
             serializer = self.serializer_class(data=request.data)
@@ -103,7 +103,7 @@ class MovieList(APIView):
             prepared_data = serializer.data
 
             # valid
-            data = self.__get_data(prepared_data['title'])
+            data = self.__get_data(prepared_data["title"])
             request.session[title] = data
         else:
             data = request.session[title]
@@ -120,5 +120,5 @@ class CommentList(ListCreateAPIView):
 
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    filter_backends = (filters.DjangoFilterBackend, )
-    filter_fields = ('movie', )
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ("movie",)
